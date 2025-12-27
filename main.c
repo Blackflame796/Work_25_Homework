@@ -7,14 +7,12 @@
 #define R 20
 #define MAX_RANGE 100
 
-// Функция для генерации случайного числа в диапазоне от min до max
 int random_range(int min, int max)
 {
     int result = rand() % (max - min + 1) + min;
     return result;
 }
 
-// Функция для генерации массива случайных чисел
 int *generate_random_array(int *array_ptr, int min_val, int max_val)
 {
     for (int i = 0; i < N; i++)
@@ -24,7 +22,6 @@ int *generate_random_array(int *array_ptr, int min_val, int max_val)
     return array_ptr;
 }
 
-// Функция для нахождения максимального значения в массиве
 int find_max(int *array_ptr)
 {
     int max_val = array_ptr[0];
@@ -38,7 +35,6 @@ int find_max(int *array_ptr)
     return max_val;
 }
 
-// Функция для нахождения минимального значения в массиве
 int find_min(int *array_ptr)
 {
     int min_val = array_ptr[0];
@@ -123,13 +119,13 @@ int *calculate_heights(int *counter_ptr, int *heights_ptr, int range_size, int r
     {
         if (max_count > 0)
         {
-            heights_ptr[i] = (int)((float)counter_ptr[i] / max_count * r);
+            heights_ptr[i] = (int)(counter_ptr[i] / max_count * r);
         }
         else
         {
             heights_ptr[i] = 0;
         }
-        // Гарантируем хотя бы один символ для ненулевых значений
+        // Проверка, что хотя бы один символ для ненулевых значений
         if (counter_ptr[i] > 0 && heights_ptr[i] == 0)
         {
             heights_ptr[i] = 1;
@@ -145,7 +141,6 @@ int *shift_left_from_extreme(int *array_ptr, int type)
 
     int start_index;
 
-    // Определение стартового индекса в зависимости от типа
     if (type == 0)
     {
         start_index = find_min_index(array_ptr);
@@ -159,14 +154,12 @@ int *shift_left_from_extreme(int *array_ptr, int type)
     if (start_index >= N - 1)
         return array_ptr;
 
-    // Сдвиг элементов влево начиная со стартового индекса
+    // Сдвиг элементов влево начиная со start_index
     for (int i = start_index; i < N - 1; i++)
     {
         array_ptr[i] = array_ptr[i + 1];
     }
 
-    // Последний элемент обнуляем
-    array_ptr[N - 1] = 0;
     return array_ptr;
 }
 
@@ -265,10 +258,10 @@ int main()
     print_array(array);
 
     int max_count = count_frequencies(array, min_range, max_range, counter_ptr);
-    // Вычисляем высоты всех столбцов
-    heights_ptr = calculate_heights(counter_ptr, heights, range_size, R, max_count);
+    // Вычисление высоты всех столбцов
+    heights_ptr = calculate_heights(counter_ptr, heights_ptr, range_size, R, max_count);
     printf("\n\n");
-    print_vertical_histogram(counter_ptr, heights, min_range, range_size, R);
+    print_vertical_histogram(counter_ptr, heights_ptr, min_range, range_size, R);
     printf("Максимальная частота: %d\n", max_count);
     printf("Максимальная высота столбца: %d символов\n", R);
     printf("Сдвиг влево элементов от минимального/максимального значения\n");
@@ -308,20 +301,20 @@ int main()
     print_array(array);
     if (type == 0)
     {
-        output_index = find_min_index(array);
+        output_index = find_min_index(array_ptr);
         printf("Сдвиг начался с позиции: %d\n", output_index);
     }
     else
     {
-        output_index = find_max_index(array);
+        output_index = find_max_index(array_ptr);
         printf("Сдвиг начался с позиции: %d\n", output_index);
     }
 
     printf("\nПосле преобразования:\n");
 
     max_count = count_frequencies(array, min_range, max_range, counter_ptr);
-    heights_ptr = calculate_heights(counter_ptr, heights, range_size, R, max_count);
-    print_vertical_histogram(counter_ptr, heights, min_range, range_size, R);
+    heights_ptr = calculate_heights(counter_ptr, heights_ptr, range_size, R, max_count);
+    print_vertical_histogram(counter_ptr, heights_ptr, min_range, range_size, R);
     printf("Максимальная частота: %d\n", max_count);
     printf("Максимальная высота столбца: %d символов\n", R);
     return 0;
